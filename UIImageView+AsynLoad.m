@@ -17,6 +17,12 @@
         return;
     }
     self.image = nil;
+    NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *filePath = [cachePath stringByAppendingPathComponent:[imageURL lastPathComponent]];
+    if([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+        self.image = [UIImage imageWithContentsOfFile:filePath];
+        return;
+    }
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:imageURL]];
     @weakify(self);
     [[[[NSURLConnection rac_sendAsynchronousRequest: request]
@@ -26,6 +32,10 @@
          @strongify(self);
          NSData *imageData = [tuple second];
          self.image = [UIImage imageWithData:imageData];
+         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+             NSString *cachePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
+             [imageData writeToFile:[cachePath stringByAppendingPathComponent:[imageURL lastPathComponent]] atomically:YES];
+         });
      }];
 }
 @end
