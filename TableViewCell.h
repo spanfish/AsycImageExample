@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  TableViewCell.h
 //  AsycImageExample
 //
 //  Created by xiangwei wang on 2017/07/03.
@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIImageView+AsynLoad.h"
 
-@interface ViewController : UIViewController
+@interface TableViewCell : UITableViewCell
 
-
+@property(nonatomic, weak) IBOutlet UIImageView *myImageView;
 @end
-

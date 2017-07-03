@@ -16,7 +16,7 @@
         NSAssert(NO, @"only UITableViewCell and UICollectionViewCell are supported");
         return;
     }
-    
+    self.image = nil;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:imageURL]];
     @weakify(self);
     [[[[NSURLConnection rac_sendAsynchronousRequest: request]
